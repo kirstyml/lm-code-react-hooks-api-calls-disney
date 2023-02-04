@@ -6,12 +6,15 @@ import CharacterContainer from './components/character_container';
 import Navigation from './components/navigation';
 import { DisneyCharacter } from './disney_character';
 import { FavouritesProvider } from './components/favourites_context';
+import { useFavourites } from './components/favourites_context'
 
 // export const FavouritesContext = React.createContext<number[]>( []);
 
 const App : React.FC = () => {
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const [favouritesView, setFavouritesView] = useState<boolean>(false);
 
   const [characters, setCharacters] = useState<Array<DisneyCharacter>>([]);
 
@@ -25,13 +28,18 @@ const App : React.FC = () => {
       setCharacters(json.data);
   };
 
+  //  const favourites = useFavourites();
+  //  console.log("favourites:")
+  //  console.log(favourites);
+
   return (
       <div className="page">
         <FavouritesProvider>
           <Header currentPage={currentPage} />
-          <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          <Navigation currentPage={currentPage} favouritesView={favouritesView} setFavouritesView={setFavouritesView} setCurrentPage={setCurrentPage} />
           <CharacterContainer 
             characters={characters}
+            favouritesView={favouritesView}
           />
         </FavouritesProvider>
       </div>

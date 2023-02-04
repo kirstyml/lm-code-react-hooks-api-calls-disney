@@ -19,14 +19,16 @@ const Character: React.FC<CharacterProps> = ({ character }) => {
     imageSrc = indexOfExtraPath >= 0 ? character.imageUrl.substring(0, indexOfExtraPath) : character.imageUrl;
   }
 
-  function toggleFavouriteForCharacter(characterId : number) {
-    if(!characterFavourites.includes(characterId)) {
+  function toggleFavouriteForCharacter(character : DisneyCharacter) {
+    if(!characterFavourites.includes(character)) {
         // add to favourites
-        updateFavourites([...characterFavourites, characterId]);
+        console.log("in toggle");
+        console.log(character);
+        updateFavourites([...characterFavourites, character]);
     }
     else {
       // remove from favourites
-      const updatedFavourites = characterFavourites.filter((id) => id !== characterId);
+      const updatedFavourites = characterFavourites.filter((entry) => entry._id !== character._id);
       updateFavourites(updatedFavourites);
     }
   }
@@ -36,8 +38,8 @@ const Character: React.FC<CharacterProps> = ({ character }) => {
 
       <h2>{character.name}</h2>
 
-      <div className="character-item__actions" onClick={() => toggleFavouriteForCharacter(character._id)}>
-        {!characterFavourites.includes(character._id) ? "Add to Favourites" : "Favourited"}
+      <div className="character-item__actions" onClick={() => toggleFavouriteForCharacter(character)}>
+        {!characterFavourites.includes(character) ? "Add to Favourites" : "Favourited"}
       </div>
 
       <img className="character-item__img" src={imageSrc} alt={character.name} />
