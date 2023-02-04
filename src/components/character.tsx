@@ -1,14 +1,16 @@
 import { DisneyCharacter } from "../disney_character"
+import React, { useContext } from 'react';
+import { useFavourites, useFavouritesUpdate } from './favourites_context'
 
 interface CharacterProps{
 	character: DisneyCharacter;
-	characterFavourites: Array<number>;
-	updateFavourites: (favourites: Array<number>) => void;
 }
 
 // for our props we can reuse the DisneyCharacter interface
 // - defining an anonymous type that just has one property - a DisneyCharacter
-const Character: React.FC<CharacterProps> = ({ character, characterFavourites, updateFavourites }) => {
+const Character: React.FC<CharacterProps> = ({ character }) => {
+    const characterFavourites = useFavourites();
+    const updateFavourites = useFavouritesUpdate();
   // Define a default in case the character doesn't have an image
   let imageSrc = "https://picsum.photos/300/200/?blur";
   if (character.imageUrl) {
