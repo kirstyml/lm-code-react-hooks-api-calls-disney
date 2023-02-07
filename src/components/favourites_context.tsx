@@ -5,27 +5,34 @@ interface IFavouritesProviderProps {
     children?: React.ReactNode
 }
 
-const FavouritesContext = React.createContext<DisneyCharacter[]>([]);
-const FavouritesUpdateContext = React.createContext<React.Dispatch<React.SetStateAction<DisneyCharacter[]>>>(() => {});
+interface IFavouritesContext {
+    favourites: DisneyCharacter[],
+    setFavourites: React.Dispatch<React.SetStateAction<DisneyCharacter[]>>
+}
+
+const defaultFavouritesState = {
+    favourites: [],
+    setFavourites: () => { }
+}
+
+const FavouritesContext = React.createContext<IFavouritesContext>(defaultFavouritesState)
 
 export const useFavourites = () => {
-    return useContext(FavouritesContext);
+    const { favourites } = useContext(FavouritesContext);
+    return favourites;
 }
 
 export const useFavouritesUpdate = () => {
-    // const favourites = useFavourites();
-    // console.log(favourites);
-    return useContext(FavouritesUpdateContext);
+    const { setFavourites } = useContext(FavouritesContext);
+    return setFavourites;
 }
 
-export const FavouritesProvider : React.FC<IFavouritesProviderProps> = ({ children }) => {
-    const [characterFavourites, setCharacterFavourites] = useState<Array<DisneyCharacter>>([]);
+export const FavouritesProvider: React.FC<IFavouritesProviderProps> = ({ children }) => {
+    const [favourites, setFavourites] = useState<Array<DisneyCharacter>>([]);
 
     return (
-        <FavouritesContext.Provider value={characterFavourites}>
-            <FavouritesUpdateContext.Provider value={setCharacterFavourites}>
-                {children}
-            </FavouritesUpdateContext.Provider>
+        <FavouritesContext.Provider value={{ favourites, setFavourites }}>
+            {children}
         </FavouritesContext.Provider>
     )
 }
